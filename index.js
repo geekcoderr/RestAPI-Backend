@@ -5,8 +5,12 @@ const app=express();
 const PORT=8000;
 
 app.use(express.urlencoded( { extended: false } ));  // middleware for parsing application/x-www-form
+app.use((req,res,next)=>{
+    console.log(`At[${(new Date()).toDateString()}] recieved ${req.method} Request On [${req.url}] from IP: ${req.ip}`);
+    next();
+});
 
-
+console.log('Middleware Bypassed');
 app.get('/users',(req,res)=>{
     const html=`
     <ul>
