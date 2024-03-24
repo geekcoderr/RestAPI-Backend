@@ -7,7 +7,9 @@ const PORT=8000;
 app.use(express.urlencoded( { extended: false } ));  // middleware for parsing application/x-www-form
 app.use((req,res,next)=>{
     console.log(`At[${(new Date()).toDateString()}] recieved ${req.method} Request On [${req.url}] from IP: ${req.ip}`);
-    next();
+    file.appendFile('requestLogs.txt',`Time: ${(new Date()).toDateString()} , Method: ${req.method} , URL/Path: ${req.url} , IP: ${req.ip}\n`,(err,data)=>{
+        next();
+    });
 });
 
 console.log('Middleware Bypassed');
