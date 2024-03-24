@@ -6,6 +6,9 @@ const PORT=8000;
 
 app.use(express.urlencoded( { extended: false } ));  // middleware for parsing application/x-www-form
 app.use((req,res,next)=>{
+    if(req.headers['x-uname']!=='geekcoderr'){
+        return res.json({'message':'Unauthorized'});
+    }
     console.log(`At[${(new Date()).toDateString()}] recieved ${req.method} Request On [${req.url}] from IP: ${req.ip}`);
     file.appendFile('requestLogs.txt',`Time: ${(new Date()).toDateString()} , Method: ${req.method} , URL/Path: ${req.url} , IP: ${req.ip}\n`,(err,data)=>{
         next();
@@ -70,7 +73,7 @@ app.post('/api/users',(req,res)=>{
     console.log(body);
     users.push({...body, id: users.length + 1});
     file.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err, data) => {
-        return res.json({"Status": `Posted with ID : ${users.length+1}`}), console.log("Data Posted");
+        return res.status(201).json({"Status": `Posted with ID : ${users.length+1}`}), console.log("Data Posted");
 });
 });
 
