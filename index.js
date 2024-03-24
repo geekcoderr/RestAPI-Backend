@@ -33,6 +33,9 @@ app.route('/api/users/id/:id')
     .get((req, res) => {
         const id = Number(req.params.id);
         const user = users.find((user) => user.id === id);
+        if (!user) {
+            res.status(404).json({ message: 'User not found.' });
+        }
         return res.json(user);
     })
     .patch((req, res) => {
@@ -70,6 +73,14 @@ app.route('/api/users/id/:id')
 
 app.post('/api/users',(req,res)=>{
     const body=req.body;
+    if(!body 
+        || !body.first_name 
+        || !body.last_name
+        || !body.email
+        || !body.gender
+        || !body.profile){
+            return res.status(400).json({'Error':'Missing Field'});
+        }
     console.log(body);
     users.push({...body, id: users.length + 1});
     file.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err, data) => {
