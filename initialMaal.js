@@ -6,6 +6,8 @@ const { strict } = require('assert');
 const app = express();
 const PORT = 8000;
 const DATABASE_NAME = 'geekcoderr';
+const cors = require('cors');
+app.use(cors());
 
 mongoose.connect(`mongodb://127.0.0.1:27017/${DATABASE_NAME}`).then(() => {
     console.log('Connection Done!\n');
